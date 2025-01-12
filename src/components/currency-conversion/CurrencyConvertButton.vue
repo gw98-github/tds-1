@@ -1,4 +1,5 @@
 <script setup>
+import Currency from '@/models/Currency'
 import { currencyService } from '@/services/CurrencyService'
 import { computed } from 'vue'
 
@@ -7,9 +8,11 @@ const emit = defineEmits(['conversionDone'])
 const props = defineProps({
   fromCurrency: {
     type: Object,
+    validator: (value) => value instanceof Currency || {},
   },
   toCurrency: {
     type: Object,
+    validator: (value) => value instanceof Currency || {},
   },
   amount: {
     type: Number,
@@ -18,9 +21,9 @@ const props = defineProps({
 
 const buttonEnabled = computed(
   () =>
-    Object.keys(props.toCurrency).length > 0 &&
-    Object.keys(props.fromCurrency).length > 0 &&
-    props.toCurrency &&
+    props.toCurrency?.shortCode &&
+    props.fromCurrency?.shortCode &&
+    props.toCurrency.symbol &&
     props.amount,
 )
 

@@ -1,4 +1,5 @@
 <script setup>
+import Currency from '@/models/Currency'
 import { ref, watch } from 'vue'
 
 const emit = defineEmits(['update:modelValue'])
@@ -10,6 +11,7 @@ const props = defineProps({
   currency: {
     type: Object,
     required: true,
+    validator: (value) => value instanceof Currency || {},
   },
 })
 

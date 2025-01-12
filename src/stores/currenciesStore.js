@@ -5,6 +5,7 @@ import Currency from '@/models/Currency'
 
 export const useCurrenciesStore = defineStore('currencies', () => {
   const currencies = ref([])
+  const fetched = ref(false)
 
   // list of currencies short codes, i.ex.: 'USD', 'PLN', 'EUR'
   const currenciesShortCodes = computed(() =>
@@ -16,6 +17,7 @@ export const useCurrenciesStore = defineStore('currencies', () => {
     const fetchedCurrencies = await currencyService.getCurrencies()
 
     currencies.value = mapResponseToCurrencies(fetchedCurrencies)
+    fetched.value = true
   }
 
   // maps list of currencies from response to Currency object list
@@ -23,5 +25,5 @@ export const useCurrenciesStore = defineStore('currencies', () => {
     return response.map((currency) => new Currency(currency))
   }
 
-  return { currencies, currenciesShortCodes, fetchCurrencies }
+  return { currencies, currenciesShortCodes, fetchCurrencies, fetched }
 })

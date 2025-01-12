@@ -1,14 +1,26 @@
 <script setup>
+import Currency from '@/models/Currency'
 import { useCurrenciesStore } from '@/stores/currenciesStore'
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 
 const emit = defineEmits(['currencyChange'])
 const currenciesStore = useCurrenciesStore()
+const props = defineProps({
+  defaultCurrency: {
+    type: Object,
+    required: false,
+    validator: (value) => value instanceof Currency,
+  },
+})
 
 const selectedCurrency = ref('')
 
 watch(selectedCurrency, (newCurrency) => {
   emit('currencyChange', newCurrency)
+})
+
+onMounted(() => {
+  selectedCurrency.value = props.defaultCurrency?.shortCode ?? ''
 })
 </script>
 
